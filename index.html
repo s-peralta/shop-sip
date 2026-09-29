@@ -6,17 +6,17 @@
 <link rel="canonical" href="https://shopnsip.nstruct.io/">
 <meta property="og:url" content="https://shopnsip.nstruct.io/">
 <meta name="theme-color" content="#0F0E0D">
-<title>Shop &amp; Sip — Nstruct × Mejuri, Toronto</title>
+<title>Shop &amp; Sip · Nstruct × Mejuri, Toronto</title>
 <meta name="description" content="An evening for 75 people who build commerce in Toronto. Wednesday 14 October, hosted at Mejuri Ossington. Put a Toronto brand up for one of twenty-five $200 credits.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Nstruct">
-<meta property="og:title" content="Shop &amp; Sip — Nstruct × Mejuri, Toronto">
+<meta property="og:title" content="Shop &amp; Sip · Nstruct × Mejuri, Toronto">
 <meta property="og:description" content="An evening for 75 people who build commerce in Toronto. Wednesday 14 October, hosted at Mejuri Ossington. Put a Toronto brand up for one of twenty-five $200 credits.">
 <meta property="og:image" content="https://shopnsip.nstruct.io/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Shop &amp; Sip — Nstruct × Mejuri, Toronto">
+<meta name="twitter:title" content="Shop &amp; Sip · Nstruct × Mejuri, Toronto">
 <meta name="twitter:description" content="An evening for 75 people who build commerce in Toronto. Wednesday 14 October, hosted at Mejuri Ossington.">
 <meta name="twitter:image" content="https://shopnsip.nstruct.io/og.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,11 +33,11 @@
 <body>
 <style>
   /* ============================================================
-     Shop & Sip — Nstruct × Mejuri
+     Shop & Sip, Nstruct x Mejuri
      Full-bleed near-black. One committed world; every colour painted explicitly.
      ============================================================ */
   :root {
-    --ghost:   #191614;   /* ghost wordmark: dark on dark */
+    --ghost:   #241F1B;   /* ghost wordmark: dark on dark, but perceptible */
     --panel:   #0F0E0D;   /* the inset panel */
     --raised:  #191614;
     --hair:    #2B2724;
@@ -56,6 +56,7 @@
     --gutter: clamp(18px, 4vw, 40px);
     --pad:    clamp(22px, 5vw, 76px);
     --maxw:   1180px;
+    --secgap: clamp(28px, 5vw, 64px);
   }
 
   * { box-sizing: border-box; }
@@ -171,6 +172,7 @@
     padding-top: 26px;
   }
   .hero-pills { display: flex; flex-wrap: wrap; gap: 10px; }
+  .hero-pills .pill { padding-block: 13px; }
 
   /* ---- On-load settle -------------------------------------------------
      The headline resolves out of soft focus while its tracking contracts,
@@ -198,7 +200,7 @@
 
   /* ---- Marginal-label section frame ---- */
   .sec { padding-block: clamp(44px, 5.5vw, 74px); }
-  .sec-grid { display: grid; gap: 28px clamp(28px, 5vw, 64px); grid-template-columns: 1fr; }
+  .sec-grid { display: grid; gap: 28px var(--secgap); grid-template-columns: 1fr; }
   @media (min-width: 900px) {
     .sec-grid { grid-template-columns: 170px 1fr; }
     .sec-label { position: sticky; top: 24px; align-self: start; }
@@ -263,26 +265,52 @@
 
   /* ---- Teams ---- */
   .rooms { display: grid; gap: 1px; background: var(--hair); border: 1px solid var(--hair); margin-top: 8px; }
-  @media (min-width: 620px)  { .rooms { grid-template-columns: repeat(2, 1fr); } }
-  @media (min-width: 1040px) { .rooms { grid-template-columns: repeat(4, 1fr); } }
-  .room { background: var(--panel); padding: 28px 24px; display: flex; flex-direction: column; gap: 9px; }
+  /* Five items only tile without a leftover empty (and visibly painted)
+     grid cell at 1 or 5 columns. Anything in between orphans one card.
+     So this jumps straight there instead of stepping through a 2-up.
+     minmax(0,1fr) forces genuinely equal tracks: plain 1fr is minmax(auto,1fr),
+     so tracks refuse to shrink below their logo width and each box ends up
+     sized by its own wordmark (Mejuri 125px vs ChatFeatured 222px).
+     The row also breaks out of the 170px label column, because five logos
+     need the full width to sit in equal boxes. */
+  @media (min-width: 1200px) {
+    .rooms {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      margin-left: calc(-170px - var(--secgap));
+      width: calc(100% + 170px + var(--secgap));
+    }
+  }
+  .room { background: var(--panel); padding: 28px 20px; display: flex; flex-direction: column; gap: 9px; }
   .room .rn { font-family: var(--display); font-weight: 600; font-size: 27px; color: var(--bone); letter-spacing: -0.01em; }
   .room p { margin: 0; color: var(--muted); font-size: 15px; }
   .mark { color: var(--bone); display: flex; align-items: center; min-height: 40px; }
   .room:hover .mark { opacity: 1; }
   .mark svg { display: block; width: auto; }
-  .mark-mejuri    svg { height: 17px; }
-  .mark-shopify   svg { height: 30px; }
-  .mark-domaine   svg { height: 19px; }
-  .mark-channable svg { height: 22px; }
+  /* Sponsor parity: these are normalised on the rendered cap-height of each
+     NAME, not on SVG box height. Every logo carries a different ratio of ink
+     to empty space in its viewBox (Channable's cube is 2.5x its own wordmark,
+     Shopify's bag is 1.2x theirs), so sizing by box makes some names render
+     at half the size of others. Values below land every name at 14-16px. */
+  .mark-mejuri    svg { height: 16px; }   /* caps fill box: 16px caps */
+  .mark-shopify   svg { height: 27px; }   /* lowercase + bag: ~14.3px cap */
+  .mark-domaine   svg { height: 16px; }   /* caps fill box: ~15.8px caps */
+  .mark-channable svg { height: 36px; }   /* text is only 40% of box: ~14.5px */
+  .mark-chatfeatured svg { height: 24px; }
+  .mark-chatfeatured .mark-word { margin-left: 9px; font-family: var(--util); font-size: 19px; font-weight: 500; letter-spacing: -0.01em; }
+  .mark-chatfeatured .mark-word b { font-weight: 700; }
 
   /* ---- Gallery scatter ---- */
-  /* Scatter the plates, float the headline over them — as the reference does. */
+  /* Scatter the plates, float the headline over them, as the reference does. */
   .gal { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(10px, 2vw, 22px); align-items: center; }
   .plate {
     border: 1px solid var(--hair); position: relative;
     background-image: var(--photo); background-size: cover;
-    filter: grayscale(1) brightness(0.66) contrast(1.12);
+    filter: grayscale(1) brightness(0.52) contrast(1.15);
+  }
+  /* matches the hero's gradient treatment so the two read as one set */
+  .plate::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(15,14,13,0.34) 0%, rgba(15,14,13,0.10) 40%, rgba(15,14,13,0.52) 100%);
   }
   .p1 { aspect-ratio: 3/4; background-size: auto 168%; background-position: 14% 26%; }
   .p2 { aspect-ratio: 3/4; margin-top: clamp(28px, 5vw, 62px); background-size: auto 128%; background-position: 62% 74%; }
@@ -296,8 +324,8 @@
     background: radial-gradient(46% 32% at 50% 50%, rgba(15,14,13,0.93) 0%, rgba(15,14,13,0.72) 52%, rgba(15,14,13,0) 100%);
   }
   .plate { transition: filter 500ms ease, border-color 500ms ease; }
-  .plate:hover { filter: grayscale(1) brightness(0.92) contrast(1.12); border-color: var(--ember); }
-  /* Three narrow plates crush below ~640px — drop to a two-up and let the
+  .plate:hover { filter: grayscale(1) brightness(0.74) contrast(1.15); border-color: var(--ember); }
+  /* Three narrow plates crush below ~640px, drop to a two-up and let the
      third run full width so the headline still has something to sit on. */
   @media (max-width: 640px) {
     .gal { grid-template-columns: repeat(2, 1fr); }
@@ -478,6 +506,11 @@
               <div class="mark mark-channable" role="img" aria-label="Channable"><svg viewBox="0 0 547 140" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs></defs><g id="channable-Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g id="channable-logo"><g><g id="channable---text" transform="translate(182.000000, 44.000000)" fill="currentColor"><path d="M22.1807,15.2803 C32.5557,15.2803 37.4697,21.2093 37.4697,21.2093 L33.1017,27.9953 C33.1017,27.9953 28.9667,23.7053 22.7267,23.7053 C15.3947,23.7053 10.6367,29.2433 10.6367,36.0293 C10.6367,42.7373 15.4727,48.5093 23.0387,48.5093 C29.7467,48.5093 34.7397,43.4393 34.7397,43.4393 L38.5617,50.4603 C38.5617,50.4603 32.8677,56.9333 22.1807,56.9333 C8.9977,56.9333 0.5747,47.6513 0.5747,36.1073 C0.5747,24.7973 8.9977,15.2803 22.1807,15.2803" id="channable-Fill-1"></path><path d="M43.957,0.6162 L53.863,0.6162 L53.863,19.8042 C53.863,21.7552 53.708,23.1592 53.708,23.1592 L53.863,23.1592 C55.813,19.3372 60.65,15.2802 67.592,15.2802 C76.406,15.2802 81.398,19.8832 81.398,30.4132 L81.398,55.9982 L71.57,55.9982 L71.57,32.4412 C71.57,27.6052 70.322,24.3292 65.252,24.3292 C60.025,24.3292 55.97,27.7612 54.487,32.5972 C54.02,34.1572 53.863,35.8732 53.863,37.7452 L53.863,55.9982 L43.957,55.9982 L43.957,0.6162 Z" id="channable-Fill-3"></path><path d="M103.1279,49.2119 C108.3549,49.2119 112.0989,43.5959 112.0989,38.7599 L112.0989,37.8229 L110.3819,37.8229 C105.3129,37.8229 97.1219,38.5249 97.1219,44.0639 C97.1219,46.7159 99.0719,49.2119 103.1279,49.2119 M110.6939,31.0369 L112.0209,31.0369 L112.0209,30.4909 C112.0209,25.2649 108.7439,23.4709 104.3759,23.4709 C98.6819,23.4709 93.4549,27.2929 93.4549,27.2929 L89.7109,20.1939 C89.7109,20.1939 95.8739,15.2799 105.3129,15.2799 C115.7649,15.2799 121.8489,21.0529 121.8489,31.1149 L121.8489,55.9979 L112.7229,55.9979 L112.7229,52.7219 C112.7229,51.1619 112.8779,49.9139 112.8779,49.9139 L112.7229,49.9139 C112.8009,49.9139 109.6799,56.9339 100.6319,56.9339 C93.5329,56.9339 87.1379,52.4879 87.1379,44.5309 C87.1379,31.8959 104.2199,31.0369 110.6939,31.0369" id="channable-Fill-5"></path><path d="M130.5439,16.2168 L140.0609,16.2168 L140.0609,20.8188 C140.0609,22.3008 139.9039,23.5488 139.9039,23.5488 L140.0609,23.5488 C141.7759,20.1948 146.1449,15.2798 154.1789,15.2798 C162.9929,15.2798 167.9849,19.8828 167.9849,30.4128 L167.9849,55.9978 L158.1569,55.9978 L158.1569,32.4418 C158.1569,27.6058 156.9089,24.3288 151.8389,24.3288 C146.5349,24.3288 142.6349,27.6828 141.1519,32.4418 C140.6069,34.0788 140.4499,35.8728 140.4499,37.7448 L140.4499,55.9978 L130.5439,55.9978 L130.5439,16.2168 Z" id="channable-Fill-7"></path><path d="M176.751,16.2168 L186.268,16.2168 L186.268,20.8188 C186.268,22.3008 186.111,23.5488 186.111,23.5488 L186.268,23.5488 C187.983,20.1948 192.352,15.2798 200.386,15.2798 C209.2,15.2798 214.192,19.8828 214.192,30.4128 L214.192,55.9978 L204.364,55.9978 L204.364,32.4418 C204.364,27.6058 203.116,24.3288 198.046,24.3288 C192.742,24.3288 188.842,27.6828 187.359,32.4418 C186.814,34.0788 186.657,35.8728 186.657,37.7448 L186.657,55.9978 L176.751,55.9978 L176.751,16.2168 Z" id="channable-Fill-9"></path><path d="M235.9219,49.2119 C241.1489,49.2119 244.8929,43.5959 244.8929,38.7599 L244.8929,37.8229 L243.1759,37.8229 C238.1059,37.8229 229.9159,38.5249 229.9159,44.0639 C229.9159,46.7159 231.8649,49.2119 235.9219,49.2119 M243.4879,31.0369 L244.8149,31.0369 L244.8149,30.4909 C244.8149,25.2649 241.5379,23.4709 237.1699,23.4709 C231.4759,23.4709 226.2499,27.2929 226.2499,27.2929 L222.5059,20.1939 C222.5059,20.1939 228.6679,15.2799 238.1059,15.2799 C248.5589,15.2799 254.6429,21.0529 254.6429,31.1149 L254.6429,55.9979 L245.5169,55.9979 L245.5169,52.7219 C245.5169,51.1619 245.6719,49.9139 245.6719,49.9139 L245.5169,49.9139 C245.5939,49.9139 242.4749,56.9339 233.4259,56.9339 C226.3269,56.9339 219.9319,52.4879 219.9319,44.5309 C219.9319,31.8959 237.0139,31.0369 243.4879,31.0369" id="channable-Fill-11"></path><path d="M282.8389,48.5879 C288.2989,48.5879 292.8229,44.1419 292.8229,36.2639 C292.8229,28.6969 288.7679,23.7829 282.9169,23.7829 C277.7689,23.7829 272.9329,27.5269 272.9329,36.3419 C272.9329,42.5039 276.2089,48.5879 282.8389,48.5879 L282.8389,48.5879 Z M263.3379,0.6159 L273.2439,0.6159 L273.2439,17.6979 C273.2439,19.6489 273.0889,21.0529 273.0889,21.0529 L273.2439,21.0529 C273.2439,21.0529 276.7549,15.2799 285.1789,15.2799 C295.9429,15.2799 302.8079,23.7829 302.8079,36.1079 C302.8079,48.7439 295.0849,56.9339 284.5549,56.9339 C276.2869,56.9339 272.6979,51.0059 272.6979,51.0059 L272.5429,51.0059 C272.5429,51.0059 272.6979,52.1759 272.6979,53.7359 L272.6979,55.9979 L263.3379,55.9979 L263.3379,0.6159 Z" id="channable-Fill-13"></path><path d="M309.1855,0.6162 L319.0135,0.6162 L319.0135,42.1132 C319.0135,46.4812 320.4965,47.5742 323.0705,47.5742 C323.8505,47.5742 324.5525,47.4962 324.5525,47.4962 L324.5525,56.1542 C324.5525,56.1542 323.0705,56.3872 321.4315,56.3872 C315.9715,56.3872 309.1855,54.9842 309.1855,43.5952 L309.1855,0.6162 Z" id="channable-Fill-15"></path><path d="M354.6133,31.1934 C354.4573,25.8104 351.1033,22.9244 346.7353,22.9244 C341.6653,22.9244 338.1543,26.0454 337.2183,31.1934 L354.6133,31.1934 Z M346.9683,15.2804 C358.4353,15.2804 364.5973,23.6274 364.5973,34.1574 C364.5973,35.3274 364.3633,37.9794 364.3633,37.9794 L336.9063,37.9794 C337.5313,44.9224 342.9133,48.5094 348.8413,48.5094 C355.2373,48.5094 360.3073,44.1414 360.3073,44.1414 L364.1303,51.2404 C364.1303,51.2404 358.0463,56.9334 348.1383,56.9334 C334.9573,56.9334 326.7663,47.4184 326.7663,36.1074 C326.7663,23.8614 335.1123,15.2804 346.9683,15.2804 L346.9683,15.2804 Z" id="channable-Fill-17"></path></g><g id="channable---icon"><polygon id="channable-Fill-19" fill="currentColor" points="35 60 0 80 0 120 35 140 70 120 35 100"></polygon><polygon id="channable-Fill-21" fill="currentColor" points="105 60 105 100 70 120 105 140 140 120 140 80"></polygon><polygon id="channable-Fill-23" fill="currentColor" points="105 60 105 20 70 0 35 20 35 60 70 40"></polygon><polygon id="channable-Fill-25" fill="currentColor" points="35 60 35 100 70 120 70 80"></polygon><polygon id="channable-Fill-27" fill="currentColor" points="105 60 70 80 70 120 105 100"></polygon><polygon id="channable-Fill-29" fill="currentColor" points="105 60 70 40 35 60 70 80"></polygon></g></g></g></g></svg></div>
               <p>Feed management and channel strategy for brands selling in more than one place.</p>
             </div>
+            <div class="room">
+              <span class="label">Annual partner</span>
+              <div class="mark mark-chatfeatured" role="img" aria-label="ChatFeatured"><svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M40 0 H80 V40 H40 V80 H0 V40 Z" fill="currentColor"/><path d="M80 120 H40 V80 H80 V40 H120 V80 Z" fill="currentColor"/></svg><span class="mark-word">Chat<b>Featured</b></span></div>
+              <p>AI search optimization, helping brands show up when people ask instead of search.</p>
+            </div>
           </div>
         </div>
       </div>
@@ -506,12 +539,12 @@
             <div class="entry-intro">
               <p class="sec-lede" style="margin-top:0;">
                 Every brand that requests a spot goes into the draw. Twenty-five are picked at
-                random, and each gets a $200 credit to spend on the night &mdash; the credit belongs
+                random, and each gets a $200 credit to spend on the night. The credit belongs
                 to the brand, spent by whoever is there from it.
               </p>
               <p class="label" style="margin-top:24px; line-height:2;">
                 Mejuri Ossington<br>Wednesday, October 14 &middot; 6:00&ndash;9:00pm<br>
-              <span style="color:var(--muted)">Full address goes out with your confirmation</span>
+              <span style="color:var(--muted)">Full address sent with your confirmation</span>
               </p>
             </div>
 
@@ -581,7 +614,7 @@
               <p>No purchase necessary. Open to residents of Ontario aged 19 or over who register and attend the Shop &amp; Sip event at Mejuri Ossington on 14 October 2026. Entries close at 11:59pm ET on Friday 9 October 2026. One entry per person; one credit per brand. Brands entered must be independent and Toronto-based.</p>
               <p>Twenty-five (25) prizes are available, each a $200 CAD in-store credit. Twenty-five brands are selected at random from valid entries received before the entry deadline. The prize is awarded to the brand named on the entry and may be redeemed only by a representative of that brand attending the event. Odds of winning depend on the number of eligible entries received. The named recipient must correctly answer a mathematical skill-testing question before being declared a winner, must attend the event, and is notified by email before it. Credits are redeemable in person at Mejuri Ossington on the night of 14 October 2026 only and are applied at checkout. They carry no cash value, cannot be carried over, exchanged, transferred or redeemed online, and are forfeited if unclaimed on the night.</p>
               <p>Entry constitutes consent to be photographed or filmed at the event and for that material to be used by Nstruct and its event partners for promotional purposes. Nstruct reserves the right to verify eligibility, disqualify entries, and amend, suspend or withdraw this promotion at any time without notice.</p>
-              <p>This promotion is administered solely by Nstruct. Mejuri, Shopify, Domaine and Channable are event partners and are not sponsors, administrators or otherwise responsible for the promotion. Void where prohibited by law. For full rules or any question about this promotion, email <a href="mailto:info@nstruct.io">info@nstruct.io</a>.</p>
+              <p>This promotion is administered solely by Nstruct. Mejuri, Shopify, Domaine, Channable and ChatFeatured are event partners and are not sponsors, administrators or otherwise responsible for the promotion. Void where prohibited by law. For full rules or any question about this promotion, email <a href="mailto:info@nstruct.io">info@nstruct.io</a>.</p>
             </div>
           </details>
         </div>
@@ -729,23 +762,10 @@
       targets.forEach(function (el) { io.observe(el); });
     }
 
-    /* ---- Ghost parallax: the wordmark drifts slower than the panel that
-       covers it, so the panel reads as a card riding over the canvas.
-       Purely decorative and already visible at rest. ---- */
-    var ghost = document.querySelector(".ghost");
-    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (ghost && !reduced.matches) {
-      var ticking = false;
-      window.addEventListener("scroll", function () {
-        if (ticking) return;
-        ticking = true;
-        requestAnimationFrame(function () {
-          var y = Math.min(window.scrollY * 0.28, 260);
-          ghost.style.transform = "translateY(" + y + "px)";
-          ticking = false;
-        });
-      }, { passive: true });
-    }
+    /* The ghost wordmark used to be position:fixed behind a sliding panel,
+       and a parallax translate sold that effect. It now sits statically in
+       the footer, where the same translate pushed it ~200px past the end of
+       the document and off-screen entirely. Removed with the panel it served. */
   })();
 </script>
 </body>
